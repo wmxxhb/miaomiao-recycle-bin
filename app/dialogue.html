@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self';script-src 'self';style-src 'self' 'unsafe-inline';object-src 'none';base-uri 'none'"><title>精灵对白</title><link rel="stylesheet" href="dialogue.css"></head>
+<body>
+  <section id="bubble" class="panel speech" aria-label="精灵的回复" hidden>
+    <button id="close-bubble" class="close" aria-label="关闭气泡" title="关闭气泡（Esc）">×</button>
+    <div id="reply" role="region" aria-label="回复正文，可滚动阅读" tabindex="0"></div>
+    <div id="thinking" aria-label="正在思考"><i></i><i></i><i></i></div>
+    <div class="bubble-foot"><span id="reply-note"></span><button id="stop" type="button" hidden>停止</button></div>
+    <span class="tail" aria-hidden="true"></span>
+  </section>
+  <form id="composer" class="panel input-panel" hidden>
+    <button id="close-input" type="button" class="close" aria-label="收起输入框" title="收起输入框（Esc）">×</button>
+    <label for="input" class="sr-only">和精灵说句话</label>
+    <textarea id="input" rows="2" maxlength="10000" placeholder="和我说句话…"></textarea>
+    <p id="input-status" role="status"></p>
+    <div class="input-foot"><span>Enter 发送 · Shift+Enter 换行</span><button id="send" type="submit">发送 ↗</button><button id="input-stop" type="button" hidden>停止回复</button></div>
+  </form>
+  <script type="module" src="dialogue.js"></script>
+</body></html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'">
+  <title>喵喵回收站</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <main id="pet-area" aria-label="喵喵回收站，拖入文件投喂">
+    <div id="message" role="status">正在召唤喵喵…</div>
+    <div id="scene"></div>
+    <div id="snack" aria-hidden="true">▤</div>
+    <div id="drop-hint">松开文件，开饭啦</div>
+  </main>
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>

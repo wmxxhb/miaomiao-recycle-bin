@@ -1,0 +1,23 @@
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;font-family:"Microsoft YaHei UI","Microsoft YaHei",sans-serif;color:#283e29;user-select:none}
+#pet-area{position:relative;width:100%;height:100%}
+#scene{position:absolute;inset:32px 8px 48px;cursor:grab}
+#scene:active{cursor:grabbing}
+canvas{display:block;width:100%;height:100%}
+#message{position:absolute;top:13px;left:22px;right:22px;text-align:center;font-size:13px;padding:8px 12px;border-radius:14px;background:#fcfff7f5;box-shadow:0 3px 14px #1f361522;pointer-events:none;opacity:1;transition:opacity .25s;z-index:2}
+#message.quiet{opacity:0}
+#drop-hint{display:none;position:absolute;inset:100px 22px 88px;align-items:flex-end;justify-content:center;padding:20px;border:2px dashed #85b359;border-radius:38px;background:#c8e69f22;pointer-events:none;font-size:14px;font-weight:600;z-index:4}
+.dragging #drop-hint{display:flex}
+#snack{position:absolute;left:43%;top:30%;font-size:38px;color:#64864b;opacity:0;pointer-events:none;z-index:5}
+#snack.eaten{animation:snack .75s ease-in forwards}
+@keyframes snack{
+  0%{opacity:1;transform:translate(-80px,-50px) rotate(-20deg) scale(1)}
+  65%{opacity:1;transform:translate(0,25px) rotate(20deg) scale(.7)}
+  100%{opacity:0;transform:translate(0,35px) scale(0)}
+}
+.evolving #scene{animation:evolve 1.2s ease-in-out}
+@keyframes evolve{
+  0%,100%{filter:none}
+  45%{filter:brightness(2) drop-shadow(0 0 20px #c9ff7a);transform:scale(.92)}
+  65%{transform:scale(1.06)}
+}

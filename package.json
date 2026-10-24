@@ -1,0 +1,36 @@
+{
+  "name": "miaomiao-recycle-bin",
+  "version": "0.5.2",
+  "private": true,
+  "type": "module",
+  "productName": "喵喵回收站",
+  "description": "Windows 桌面精灵：文件回收、成长、漫画气泡 AI 对话与动作预览",
+  "main": "app/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "prestart": "node scripts/build-native.cjs && node scripts/check-assets.cjs",
+    "studio": "node action-studio/start.mjs",
+    "test": "node scripts/test.cjs",
+    "test:assets": "node --test tests/integration/studio.test.mjs",
+    "assets:check": "node scripts/check-assets.cjs",
+    "assets:import": "node scripts/import-assets.cjs",
+    "build:native": "node scripts/build-native.cjs",
+    "prepackage": "node scripts/build-native.cjs",
+    "package": "node scripts/package.cjs",
+    "check:publish": "node scripts/check-publish.cjs"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "electron": "45.0.0"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmxxhb/miaomiao-recycle-bin.git"
+  }
+}

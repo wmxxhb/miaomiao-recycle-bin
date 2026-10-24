@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self';script-src 'self';style-src 'self';object-src 'none';base-uri 'none'"><title>喵喵回收站 · 设置</title><link rel="stylesheet" href="settings.css"></head>
+<body><main>
+  <header><h1>喵喵回收站</h1><p>形态、成长、桌面大小与 AI 对话</p><a href="#ai-settings">AI 对话设置 ↓</a></header>
+  <section><h2>精灵形态</h2><div class="modes"><button data-mode="growth">投喂成长</button><button data-mode="manual">手动形态</button></div><div class="forms"><button data-form="0">喵喵</button><button data-form="1">喵呜</button><button data-form="2">魔力猫</button></div><p id="mode-description" class="hint"></p></section>
+  <section><h2>进化进度 <span id="feed-total"></span></h2><div class="progress"><i id="progress-fill"></i></div><p id="progress-detail" class="hint"></p><form id="threshold-form"><label>进化为喵呜 <span><input id="first-threshold" type="number" min="1" max="999998" required> 次</span></label><label>进化为魔力猫 <span><input id="second-threshold" type="number" min="2" max="999999" required> 次</span></label><div class="row"><small>均为累计投喂次数，一批成功计一次</small><button class="primary" type="submit">保存次数</button></div></form></section>
+  <section><h2>桌面大小 <output id="scale-label">100%</output></h2><input id="pet-scale" aria-label="精灵缩放" type="range" min="50" max="200" step="5" value="100"><div class="row"><small>50%–200%，拖动后即时预览</small><button id="reset-scale">恢复 100%</button></div></section>
+  <section><h2>精灵动作室</h2><p class="hint">查看三种形态的 81 段动作，支持逐帧、慢放和视角调整。</p><button id="studio" class="wide">打开精灵动作室 ↗</button></section>
+  <section id="ai-settings"><h2>AI 对话 <span id="ai-key-status">尚未配置</span></h2>
+    <p class="hint">填写后，右键桌面精灵即可说话，回复显示在漫画气泡中。对话直接发送到所选服务地址。</p>
+    <form id="ai-form" autocomplete="off">
+      <label class="field">AI 厂商<select id="ai-provider" required></select></label>
+      <label class="field">API Key<input id="ai-api-key" type="password" autocomplete="new-password" spellcheck="false" maxlength="8192" placeholder="在这里安全填写密钥"></label>
+      <p class="hint" id="ai-key-hint">密钥由 Windows 本机加密保存，保存后不再显示；请勿把密钥发进聊天窗口。</p>
+      <label class="field">模型名称<input id="ai-model" list="ai-model-list" maxlength="160" placeholder="选择或输入模型名称" required><datalist id="ai-model-list"></datalist></label>
+      <div class="ai-buttons"><button id="ai-models" type="button">获取模型列表</button><button id="ai-test" type="button">测试连接</button></div>
+      <p class="hint">测试连接会发送一句简短测试消息，按厂商 API 规则计费，不携带聊天记录。</p>
+      <details><summary>服务地址与高级选项</summary>
+        <label class="field">API 基础地址<input id="ai-base-url" type="url" placeholder="https://api.example.com/v1" spellcheck="false"></label>
+        <p class="hint">更换服务域名后，需要重新填写密钥。远程服务使用 HTTPS；本机服务可使用 localhost 的 HTTP。</p>
+        <label class="field">接口格式<select id="ai-protocol"><option value="chat">OpenAI 兼容 Chat Completions</option><option value="responses">OpenAI Responses</option><option value="claude">Claude Messages</option></select></label>
+        <div id="ai-claude-fields"><label class="field">Claude API 版本<input id="ai-api-version" placeholder="2026-10-21" maxlength="10"></label><label class="field">Workspace ID（按需填写）<input id="ai-workspace" maxlength="160" placeholder="账号要求选择 Workspace 时填写"></label></div>
+        <div class="ai-limits"><label>携带最近几轮对话<input id="ai-context" type="number" min="1" max="30" value="8"></label><label>回复上限（tokens）<input id="ai-max-tokens" type="number" min="128" max="8192" value="1024"></label></div>
+      </details>
+      <details><summary>精灵性格与回应</summary>
+        <p class="hint">内置人设：喵喵胆小又调皮，喵呜大胆、偶尔逞强，魔力猫温和可靠。三种形态沿用当前对话，每次回复都以“喵”收尾。</p>
+        <label class="field">精灵怎样称呼你<input id="ai-nickname" maxlength="40" placeholder="留空时称呼你为“小洛克”"></label>
+        <label class="field">补充性格与回复偏好<textarea id="ai-personality" maxlength="3000" rows="4" placeholder="在当前形态的人设基础上补充，例如：少用动作描写"></textarea></label>
+        <label class="check"><input id="ai-bubbles" type="checkbox" checked> 用漫画大气泡显示完整回复</label>
+        <label class="check"><input id="ai-emotions" type="checkbox" checked> 根据聊天情绪播放动作</label>
+      </details>
+      <p class="hint">密钥留空会保留此域名下已保存的密钥；聊天记录和导出文件不包含保存的密钥。</p>
+      <div class="ai-buttons"><button class="primary" type="submit" id="ai-save">保存 AI 设置</button><button type="button" id="ai-forget-key">删除已存密钥</button></div>
+    </form><p id="ai-status" role="status"></p>
+  </section>
+  <p id="status" role="status"></p><footer><span>文件投喂后移入系统回收站</span><button id="hide">隐藏精灵</button><button id="quit">退出</button></footer>
+</main><script type="module" src="settings.js"></script></body></html>

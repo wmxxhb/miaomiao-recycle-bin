@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff"><title>精灵动作室</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2318181b'/%3E%3Cpath d='m16 6 9 5v10l-9 5-9-5V11Z M7 11l9 5 9-5 M16 16v10' stroke='white' fill='none' stroke-width='1.5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script type="importmap">{"imports":{"three":"/vendor/build/three.module.js","three/addons/":"/vendor/examples/jsm/"}}</script>
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main class="workspace">
+    <aside class="sidebar" aria-label="筛选与动作">
+      <header class="sidebar-header"><h1><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z M4 7.5l8 4.5 8-4.5 M12 12v9"/></svg>精灵动作室</h1><span id="libraryCount" class="badge">135</span></header>
+      <div class="search-wrap"><label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search" type="search" placeholder="搜索动作或形态…" aria-label="搜索动作或形态"></label></div>
+      <div class="library-picker"><label for="familySelect">精灵系列</label><select id="familySelect" aria-label="精灵系列"></select></div>
+      <div class="tabs" role="tablist" aria-label="筛选选项">
+        <button id="filterTab" role="tab" aria-selected="true" aria-controls="filterPanel" tabindex="0">筛选</button>
+        <button id="appearanceTab" role="tab" aria-selected="false" aria-controls="appearancePanel" tabindex="-1">外观</button>
+      </div>
+      <div class="control-scroll">
+        <section id="filterPanel" class="control-panel" role="tabpanel" aria-labelledby="filterTab" tabindex="0">
+          <fieldset><legend>精灵形态<span>多选</span></legend><div id="formFilters" class="check-list"></div></fieldset>
+          <fieldset><legend>动作类别<span>多选</span></legend><div id="categoryFilters" class="chips"></div></fieldset>
+          <fieldset><legend>播放特征</legend><div class="segments"><label><input type="radio" name="behavior" value="all" checked><span>全部</span></label><label><input type="radio" name="behavior" value="loop"><span>循环候选</span></label><label><input type="radio" name="behavior" value="once"><span>单次</span></label></div></fieldset>
+          <label class="field" for="durationFilter">动作时长<select id="durationFilter"><option value="all">不限时长</option><option value="short">1 秒以内</option><option value="medium">1–3 秒</option><option value="long">3 秒以上</option></select></label>
+          <button id="resetFilters" class="button outline full">重置筛选</button>
+        </section>
+        <section id="appearancePanel" class="control-panel" role="tabpanel" aria-labelledby="appearanceTab" tabindex="0" hidden>
+          <label class="field" for="eyeSelect">性格 / 眼神<select id="eyeSelect" aria-describedby="eyeHint"></select></label>
+          <label class="check-row"><input id="autoEyes" type="checkbox" checked>跟随动作切换眼神</label>
+          <p id="eyeHint" class="hint">保留眨眼与动作表情；取消勾选可固定眼神。</p>
+          <label class="field" for="glassyMode">炫彩<select id="glassyMode" aria-describedby="glassyHint"></select></label>
+          <div id="glassyCustom" class="glassy-custom" hidden>
+            <label class="field" for="glassyColor">配色<select id="glassyColor"></select></label><span id="glassySwatch" class="glassy-swatch" aria-hidden="true"></span>
+            <label class="field" for="glassyParticle">粒子<select id="glassyParticle"></select></label>
+          </div>
+          <p id="glassyHint" class="hint" role="status">炫彩为简化材质预览。</p>
+          <div class="separator"></div>
+          <label class="check-row"><input id="inPlace" type="checkbox" checked>原地播放移动动作</label>
+          <label class="check-row"><input id="showOutline" type="checkbox" checked>显示轮廓线</label>
+        </section>
+      </div>
+      <div class="list-heading"><h2>动作<span id="resultCount" class="badge">27</span></h2><select id="sort" aria-label="动作排序"><option value="default">默认顺序</option><option value="short">时长从短到长</option><option value="long">时长从长到短</option><option value="name">动作名称</option></select></div>
+      <div class="action-scroll" tabindex="0" aria-label="动作列表滚动区域">
+        <div id="actionGrid" class="action-list" role="list" aria-label="筛选结果"></div>
+        <div class="empty-state" id="emptyState" hidden><p>没有匹配的动作</p><button id="clearEmpty" class="button outline">清空筛选</button></div>
+      </div>
+    </aside>
+    <section class="preview" aria-label="精灵预览">
+      <header class="preview-header"><div class="current-action"><div class="current-title"><h2 id="currentName">待机</h2><span id="currentClip" class="badge">Idle</span><span id="formWarning" class="warning-badge" hidden title="此形态有骨骼导出警告，请留意动作是否变形。">骨骼警告</span></div><p id="formHeading">护主犬 · 本来的样子</p></div>
+        <div class="view-tools"><button id="frontCamera" class="button outline small">正面</button><button id="sideCamera" class="button outline small">侧面</button><button id="resetCamera" class="button outline icon-button" title="恢复默认视角" aria-label="恢复默认视角"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 7 M4 4v6h6"/></svg></button></div>
+      </header>
+      <div class="stage" id="stage" data-background="light" aria-busy="true">
+        <div id="canvasMount"></div><img id="fallbackPoster" alt="当前动作的静态姿势" hidden>
+        <div class="stage-status" id="renderState" role="status">正在加载模型…</div><div class="stage-message" id="stageMessage" role="alert" hidden></div>
+        <div class="backgrounds" role="group" aria-label="预览背景"><button data-bg="light" aria-pressed="true" aria-label="浅色背景" title="浅色背景"></button><button data-bg="night" aria-pressed="false" aria-label="深色背景" title="深色背景"></button><button data-bg="grid" aria-pressed="false" aria-label="透明网格背景" title="透明网格背景"></button></div>
+      </div>
+      <div class="playback">
+        <input id="timeline" type="range" min="0" max="5" step="0.001" value="0" aria-label="动作进度">
+        <div class="transport"><div class="transport-buttons">
+          <button id="previousFrame" class="button ghost icon-button" aria-label="上一帧" title="上一帧"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14 M18 5l-9 7 9 7Z"/></svg></button>
+          <button id="playPause" class="button primary icon-button" aria-label="暂停" title="播放 / 暂停" data-playing="true"><svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14 M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 12 8-12 8Z"/></svg></button>
+          <button id="nextFrame" class="button ghost icon-button" aria-label="下一帧" title="下一帧"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14 M6 5l9 7-9 7Z"/></svg></button>
+        </div><span class="timecode"><span id="currentTime">0.00</span><span class="time-divider">/</span><span id="totalTime">5.00</span>s</span>
+        <div class="transport-options"><select id="speed" aria-label="播放速度"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select><label class="check-row"><input id="loop" type="checkbox" checked>循环</label></div></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

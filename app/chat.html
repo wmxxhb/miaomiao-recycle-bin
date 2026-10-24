@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self';script-src 'self';style-src 'self';object-src 'none';base-uri 'none'"><title>精灵聊天记录</title><link rel="stylesheet" href="chat.css"></head>
+<body>
+  <header><div><h1>聊天记录</h1><p>右键桌面上的精灵，就能继续说话。</p></div><div class="provider"><label for="provider">AI 厂商</label><select id="provider" aria-label="AI 厂商"></select><span id="model"></span></div></header>
+  <nav aria-label="管理对话"><select id="conversations" aria-label="选择已保存的对话"></select><button id="new">新建</button><details id="more"><summary>更多</summary><div class="more-menu"><button id="export">导出当前对话</button><button id="clear">清空当前对话</button><button id="delete">删除当前对话</button></div></details></nav>
+  <p id="configuration-hint" class="configuration" hidden>请右键托盘图标 → 打开设置 → AI 对话，使用密码框安全填写 API Key。</p>
+  <main id="messages" aria-label="对话记录"><div id="empty"><span class="pet-mark">✿</span><h2>今天想聊些什么？</h2><p>对话会保存在本机。你可以随时停止回复，或新建一个对话。</p></div></main>
+  <div id="chat-status" role="status" aria-live="polite"></div>
+  <div id="composer"><div class="composer-tools"><span id="saved-hint">记录保存在本机</span><div><button type="button" id="regenerate">重新回答</button><button type="button" id="stop" hidden>停止生成</button><button type="button" id="continue" class="primary">回到精灵身边</button></div></div></div>
+  <script type="module" src="chat.js"></script>
+</body></html>
