@@ -17,7 +17,8 @@
     "build:native": "node scripts/build-native.cjs",
     "prepackage": "node scripts/build-native.cjs",
     "package": "node scripts/package.cjs",
-    "check:publish": "node scripts/check-publish.cjs"
+    "check:publish": "node scripts/check-publish.cjs",
+    "release": "node scripts/release.cjs"
   },
   "dependencies": {
     "three": "0.186.1"

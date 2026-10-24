@@ -1,12 +1,15 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const { loadAssetBundle, assetFile } = require('../app/asset-files.cjs');
+const { contains } = require('../app/core.cjs');
 const root = path.resolve(__dirname, '..');
 async function main() {
   if(process.platform !== 'win32') throw new Error('便携桌面版仅支持 Windows');
   const bundle = await loadAssetBundle(path.join(root, 'resources/miaomiao'), { models: true });
   const version = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8')).version;
-  const output = path.join(root, 'dist', '喵喵回收站-' + version);
+  const option=process.argv.indexOf('--out');
+  const output=option>=0?path.resolve(root,process.argv[option+1]||''):path.join(root,'dist','喵喵回收站-'+version);
+  if(output===path.join(root,'dist')||!contains(path.join(root,'dist'),output))throw new Error('打包输出必须是 dist 内的独立目录');
   await fs.mkdir(path.dirname(output), { recursive: true });
   // Refuse to overwrite a version which may be running or contain local changes.
   await fs.mkdir(output);

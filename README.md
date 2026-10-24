@@ -4,7 +4,9 @@
 
 桌面版 **0.5.2** · Windows 10/11 · Electron + Three.js · MIT（仅项目代码）
 
-> 仓库公开桌面程序源码。角色模型、贴图、动画和导出工具需从你本机准备，不包含在 Git 中。API 密钥、聊天、投喂记录及安卓版也不在此仓库。首次运行前请完成下面的素材导入。
+[下载安装程序（EXE）](https://github.com/wmxxhb/miaomiao-recycle-bin/releases/latest/download/Miaomiao-Recycle-Bin-Setup-0.5.2.exe) · [下载便携版（ZIP）](https://github.com/wmxxhb/miaomiao-recycle-bin/releases/latest/download/Miaomiao-Recycle-Bin-0.5.2-Windows-x64.zip)
+
+Windows 10/11 64 位。发布包已包含程序、三种形态和动作资源，无需安装 Node.js、游戏或另外准备素材。AI 对话需要你自己的 API 配置。
 
 ## 功能
 
@@ -20,27 +22,14 @@
 - **精灵动作室**：三种形态各 27 段动作；搜索、分类、播放/暂停、逐帧、速度、循环、原地播放、眼神和视角调整。收藏与用途备注独立保存，属于预览清单。
 - **托盘控制**：打开设置、输入框、聊天记录、动作室，切换形态、显示/隐藏、召回和退出。
 
-## 从源码运行
-
-需要 Windows 10/11、Node.js 22.12+、npm。Windows 的 .NET Framework 4.x C# 编译器用于构建两个小型原生组件；脚本会自动查找。
-
-```powershell
-git clone https://github.com/wmxxhb/miaomiao-recycle-bin.git
-cd miaomiao-recycle-bin
-npm ci
-```
-
-准备一份包含 `runtime.json` 的本地素材目录，或包含 `dump.json`、GLB 与 PNG 的喵喵进化链导出目录，然后执行：
-
-```powershell
-npm run assets:import -- --from "你的本机素材目录"
-npm run assets:check
-npm start
-```
-
-`npm start` 会先编译原生辅助程序并检查素材。缺少素材时会提示准备步骤。素材导出与目录格式见 [素材准备](docs/assets.md)。普通使用无需配置 AI；聊天功能需要自己的 API 服务和额度。
-
 ## 使用指南
+
+### 下载与启动
+
+- **安装版**：下载上方 EXE，运行安装程序，随后从桌面或开始菜单打开“喵喵回收站”。无需管理员权限。
+- **便携版**：下载上方 ZIP，完整解压到普通文件夹，再双击其中的 `喵喵回收站.exe`。请保留旁边的文件和目录，不要只复制 EXE。
+- 更新前先通过托盘退出旧程序。便携版可解压到新目录；设置和聊天保存在当前 Windows 用户目录中。
+- 初次启动先轻点精灵试试；右键系统托盘图标可打开设置。
 
 ### 桌面操作
 
@@ -111,41 +100,4 @@ npm start
 
 渲染器通过有限的 preload 接口请求主进程操作；主进程检查请求窗口和主框架。模型回复以纯文本呈现。AI 密钥由主进程加解密并发送到用户配置的服务，不回传界面；文件投喂与 AI 请求各自处理。
 
-```text
-app/             桌面窗口、动作、AI 协议与本机状态
-action-studio/   独立动作预览页面和本机服务
-native/          两个 C# 辅助程序源码
-scripts/         素材导入、构建、测试与提交检查
-tests/           无游戏素材的默认测试；integration/ 为本机素材检查
-docs/            素材准备和开发说明
-resources/       本机导入素材（Git 忽略）
-```
-
-## 测试与本机打包
-
-```powershell
-npm test                 # 默认测试使用人工夹具，不需要游戏素材或真实 API
-npm run test:assets      # 导入素材后验证三个模型与 81 段动作
-npm run build:native     # 编译 Windows 辅助组件
-npm run package          # 生成本机便携目录 dist/喵喵回收站-0.5.2/
-npm run check:publish    # 检查 Git 中是否混入敏感文件、密钥或素材
-```
-
-便携目录中的 `喵喵回收站.exe` 可直接运行；请保留完整目录。本机打包会带入你导入的素材，公开仓库不自动上传此类安装包。打包拒绝覆盖已存在的版本目录，以免覆盖正在运行的程序。
-
-默认测试覆盖动作计时、成长、回收错误、气泡布局、三个 AI 协议、上下文、密钥隔离、重定向、素材路径及动作室访问控制。CI 运行无素材测试；真实 Windows 窗口、回收站和渲染集成检查见 [开发与验证](docs/development.md)。
-
-## 常见问题
-
-- **启动提示缺少素材**：完成 `assets:import`，运行 `assets:check`；普通 `.rkpet2` 文件不能直接当作 GLB 导入。
-- **精灵不见了**：在托盘选择“显示 / 隐藏”或“召回屏幕右下角”。
-- **回收后桌面图标仍在**：程序会通知资源管理器刷新；也可以 F5。以原路径和系统回收站的实际状态为准。
-- **AI 连接失败**：检查地址、模型权限、额度及网络代理；不要把密钥放进地址、模型名或聊天中。
-- **动作室打不开**：检查素材与依赖；程序菜单会启动项目自带服务，`npm run studio` 可单独打开。
-- **跨平台**：当前桌面程序针对 Windows；其他系统可运行默认源码测试，文件回收与窗口移动未做跨平台适配。
-
-## 许可与致谢
-
-项目自有代码采用 [MIT](LICENSE)。游戏角色名称、形象、模型、贴图、动画和导出器各自属于其权利人，不受本项目 MIT 许可覆盖。本项目不内置游戏素材、不复制导出器实现，不代表游戏官方。
-
-素材准备参考 [whoisnian/rocom-pets](https://github.com/whoisnian/rocom-pets)。运行依赖采用 Electron 与 Three.js，具体说明见 [第三方说明](THIRD_PARTY_NOTICES.md)。
+项目自有代码采用 [MIT](LICENSE)。源码仓库中的角色素材由本机导入；发行包包含运行所需角色资源，角色形象、模型、贴图和动画仍属于各自权利人，不受本项目 MIT 许可覆盖。本项目不代表游戏官方。素材来源参考 [rocom-pets](https://github.com/whoisnian/rocom-pets)，更多说明见 [第三方说明](THIRD_PARTY_NOTICES.md)。

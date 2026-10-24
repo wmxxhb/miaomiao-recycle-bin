@@ -24,6 +24,7 @@
 !/scripts/check-assets.cjs
 !/scripts/import-assets.cjs
 !/scripts/check-publish.cjs
+!/scripts/release.cjs
 !/scripts/test.cjs
 !/scripts/package.cjs
 !/scripts/studio-smoke.cjs

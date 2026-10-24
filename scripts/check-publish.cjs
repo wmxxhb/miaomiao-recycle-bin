@@ -9,7 +9,7 @@ const fixture='sk-local-fixture-not-a-real-key-123456789';
 const issues=[];let bytes=0;
 for(const entry of entries){
   const split=entry.indexOf('\t'),metadata=entry.slice(0,split),file=entry.slice(split+1);
-  const allowed=roots.has(file)||file==='resources/miaomiao/README.md'||/^(app|action-studio|native|scripts|tests|docs|\.github)\/.+\.(?:cjs|mjs|js|json|html|css|cs|md|ya?ml)$/u.test(file);
+  const allowed=roots.has(file)||file==='resources/miaomiao/README.md'||/^(app|action-studio|native|scripts|tests|docs|\.github)\/.+\.(?:cjs|mjs|js|json|html|css|cs|nsi|md|ya?ml)$/u.test(file);
   if(!allowed||!metadata.startsWith('100')){issues.push(file+'：不属于允许发布的源码文件');continue;}
   if(/(^|\/)(?:node_modules|dist|artifacts|android|signing|downloads)(\/|$)|(?:^|\/)(?:ai-secrets|ai-settings|chat-history|recycle-log|state|action-choices)\.json$|(?:^|\/)\.env(?:\.|$)/u.test(file)){issues.push(file+'：含私有数据或构建目录');continue;}
   const content=git(['show',':'+file]);bytes+=Buffer.byteLength(content);
